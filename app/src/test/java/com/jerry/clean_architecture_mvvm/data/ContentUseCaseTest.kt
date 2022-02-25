@@ -35,7 +35,7 @@ class ContentUseCaseTest {
     }
 
     @Test
-    fun `test test`() {
+    fun `simple repository test`() {
         runTest {
             whenever(mockContentApiService.getContentList()).thenReturn(getContentListResponse())
             val contentRepository = ContentRepositoryImpl(mockContentApiService)
@@ -48,7 +48,7 @@ class ContentUseCaseTest {
     }
 
     @Test
-    fun combineUnendingFlows() = runBlockingTest {
+    fun `get content usecase test`() = runBlockingTest {
         val job = Job()
         val childScope = CoroutineScope(this.coroutineContext + job)
 
