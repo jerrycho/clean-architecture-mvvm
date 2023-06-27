@@ -5,9 +5,11 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.scopes.ActivityScoped
 
 
 @AndroidEntryPoint
+@ActivityScoped
 class MainActivity : AppCompatActivity() {
 
     private lateinit var progressBar: ProgressBar

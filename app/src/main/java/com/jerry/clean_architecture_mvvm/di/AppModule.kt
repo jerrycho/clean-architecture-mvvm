@@ -25,17 +25,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    @Singleton
-    fun provideContentRepository(contentApiService: ContentApiService): ContentRepository {
-        return ContentRepositoryImpl(contentApiService)
-    }
-
-    @Singleton
-    @Provides
-    fun provideContentApiService(retrofit: Retrofit): ContentApiService {
-        return retrofit.create(ContentApiService::class.java)
-    }
 
     @Singleton
     @Provides

@@ -43,8 +43,6 @@ class ContentListFragment : BaseFragment(){
     private var contentAdapter: ContentAdapter? = null
 
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentContentListBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_content_list, container, false)
