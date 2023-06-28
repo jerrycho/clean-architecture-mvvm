@@ -90,4 +90,7 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_version_kotlin"
     testImplementation 'org.mockito:mockito-inline:2.13.0'
     testImplementation 'org.robolectric:robolectric:4.5.1'
+
+    //test flow
+    testImplementation "app.cash.turbine:turbine:$turbine_version"
 }

@@ -1,50 +1,32 @@
-package com.jerry.clean_architecture_mvvm.usecase
-
-
+package com.jerry.clean_architecture_mvvm.repository
 
 import com.jerry.clean_architecture_mvvm.data.source.network.ContentApiService
-import com.jerry.clean_architecture_mvvm.di.usecase.GetContentUseCaseAbstractModule
 import com.jerry.clean_architecture_mvvm.domain.entities.ContentListResponse
 import com.jerry.clean_architecture_mvvm.domain.respository.ContentRepository
-import com.jerry.clean_architecture_mvvm.domain.usecase.GetContentUseCase
 import com.jerry.clean_architecture_mvvm.domain.usecase.impl.GetContentUseCaseImpl
-import dagger.Provides
-import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
-import dagger.hilt.android.testing.UninstallModules
-import dagger.hilt.components.SingletonComponent
-import dagger.hilt.testing.TestInstallIn
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
+
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
-import javax.inject.Inject
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.LooperMode
-import app.cash.turbine.*
-import com.jerry.clean_architecture_mvvm.others.MyResult
-import kotlinx.coroutines.flow.toList
-import org.mockito.kotlin.given
-import java.net.SocketTimeoutException
-
+import javax.inject.Inject
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [25], application = HiltTestApplication::class)
 @ExperimentalCoroutinesApi
 @LooperMode(LooperMode.Mode.PAUSED)
-class ContentUseCaseImplTest {
-
+class ContentRepositoryTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -65,41 +47,22 @@ class ContentUseCaseImplTest {
     }
 
     @Test
-    fun `get content usecase success`() {
-        runBlockingTest  {
+    fun `get content repository get content list success`() {
+        runTest {
+            whenever(contentApiService.getContentList()).thenReturn(getContentListResponse())
 
-            given(contentApiService.getContentList()).willReturn(getContentListResponse())
+            val list = contentRepository.getContent()
 
-            val ssss = getContentUseCaseImpl()
-            val list = ssss.toList()
-
-            Assert.assertEquals(3, list.size)
-
-            Assert.assertEquals(true, list[0].isLoading)
-            Assert.assertEquals(getContentListResponse().items!!.size, list[1].data?.items?.size)
-            Assert.assertEquals(false, list[2].isLoading)
-
+            Assert.assertEquals(list.items!!.size, getContentListResponse().items!!.size)
         }
     }
 
-    @Test
-    fun `get content usecase exception`() {
-        runBlockingTest  {
-            given(
-                contentApiService.getContentList()
-            ).willAnswer{
-                throw Exception()
-            }
+    @Test(expected = Exception::class)
+    fun `get content repository get content list exception`() {
+        runTest {
+            whenever(contentApiService.getContentList()).thenThrow(Exception::class.java)
 
-            val ssss = getContentUseCaseImpl()
-            val list = ssss.toList()
-
-            Assert.assertEquals(3, list.size)
-
-            Assert.assertEquals(true, list[0].isLoading)
-            Assert.assertEquals(false, list[1].isLoading)
-            Assert.assertEquals(Exception::class.java, list[2].t?.javaClass)
-
+            contentRepository.getContent()
         }
     }
 
@@ -110,4 +73,3 @@ class ContentUseCaseImplTest {
         )
     }
 }
-

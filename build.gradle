@@ -17,6 +17,8 @@ buildscript {
         mockito_version_kotlin = '4.0.0'
 
         kotlin_version = '1.6.10'
+
+        turbine_version = '0.7.0'
     }
     repositories {
         google()
