@@ -58,7 +58,7 @@ class ContentRepositoryTest {
     }
 
     @Test(expected = Exception::class)
-    fun `get content repository get content list exception`() {
+    fun `get content repository get content list throws exception`() {
         runTest {
             whenever(contentApiService.getContentList()).thenThrow(Exception::class.java)
 

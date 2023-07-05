@@ -5,5 +5,7 @@ import com.jerry.clean_architecture_mvvm.others.MyResult
 import kotlinx.coroutines.flow.Flow
 
 interface GetContentUseCase {
-    operator fun invoke(): Flow<MyResult<ContentListResponse>>
+   //operator fun invoke(): Flow<MyResult<ContentListResponse>>
+
+    suspend operator fun invoke(): ContentListResponse
 }

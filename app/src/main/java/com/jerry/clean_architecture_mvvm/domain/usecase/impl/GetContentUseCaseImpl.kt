@@ -15,15 +15,20 @@ class GetContentUseCaseImpl @Inject constructor(
     private val contentRepository: ContentRepository
 ): GetContentUseCase {
 
-    override operator fun invoke(): Flow<MyResult<ContentListResponse>> = flow {
-        try {
-            emit(MyResult.Loading<ContentListResponse>(true))
-            val contents = contentRepository.getContent()
-            emit(MyResult.Success<ContentListResponse>(contents))
-            emit(MyResult.Loading<ContentListResponse>(false))
-        } catch(e: Exception) {
-            emit(MyResult.Loading<ContentListResponse>(false))
-            emit(MyResult.Error<ContentListResponse>(e))
-        }
+    //    override operator fun invoke(): Flow<MyResult<ContentListResponse>> = flow {
+//        try {
+//            emit(MyResult.Loading<ContentListResponse>(true))
+//            val contents = contentRepository.getContent()
+//            emit(MyResult.Success<ContentListResponse>(contents))
+//            emit(MyResult.Loading<ContentListResponse>(false))
+//        } catch(e: Exception) {
+//            emit(MyResult.Loading<ContentListResponse>(false))
+//            emit(MyResult.Error<ContentListResponse>(e))
+//        }
+//    }
+    override suspend fun invoke(): ContentListResponse {
+        //we can add business logic here
+        return contentRepository.getContent()
     }
+
 }

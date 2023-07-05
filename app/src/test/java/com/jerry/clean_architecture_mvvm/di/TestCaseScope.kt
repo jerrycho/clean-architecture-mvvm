@@ -1,4 +1,4 @@
-package com.jerry.clean_architecture_mvvm.usecase.di
+package com.jerry.clean_architecture_mvvm.di
 
 import javax.inject.Scope
 

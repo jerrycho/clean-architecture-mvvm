@@ -6,9 +6,12 @@ import com.jerry.clean_architecture_mvvm.others.MyResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jerry.clean_architecture_mvvm.domain.entities.ContentListResponse
-import com.jerry.clean_architecture_mvvm.presentation.base.ViewStated
+
 import com.jerry.clean_architecture_mvvm.domain.usecase.GetContentUseCase
+import com.jerry.clean_architecture_mvvm.presentation.base.ViewState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -17,31 +20,25 @@ class ContentListViewModel  @Inject constructor(
     private val getContentUseCase: GetContentUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(ViewStated<ContentListResponse>())
-    val state: StateFlow<ViewStated<ContentListResponse>> = _state.asStateFlow()
+    private val _state = MutableStateFlow<ViewState<ContentListResponse>>(ViewState.Initial)
+    val state = _state.asStateFlow()
 
-    init {
-        getContent()
-    }
+    private val _state2 = MutableStateFlow<ViewState<ContentListResponse>>(ViewState.Initial)
+    val state2 = _state2.asStateFlow()
+
 
     fun getContent() {
-        getContentUseCase().onEach {
-                result ->
-            when (result) {
-                is MyResult.Loading -> {
-                    _state.value = ViewStated(isLoading = result.isLoading )
-                }
-                is MyResult.Success -> {
-                    _state.value = ViewStated<ContentListResponse>( data = result.data )
-                }
-                is MyResult.Error -> {
-                    _state.value = ViewStated<ContentListResponse>(
-                        t = result.t
-                    )
-                }
+        viewModelScope.launch {
+            _state.value = ViewState.Loading
+            try {
+                _state.value = ViewState.Success(getContentUseCase())
+            } catch (e: Exception) {
+                _state.value = ViewState.Failure(e)
             }
-        }.launchIn(viewModelScope)
+        }
+
     }
+
 
 
 }

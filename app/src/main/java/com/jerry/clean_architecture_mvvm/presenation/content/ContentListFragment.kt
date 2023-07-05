@@ -26,6 +26,7 @@ import com.jerry.clean_architecture_mvvm.domain.entities.Content
 import com.jerry.clean_architecture_mvvm.presentation.base.BaseFragment
 
 import com.jerry.clean_architecture_mvvm.presenation.content.adpater.ContentAdapter
+import com.jerry.clean_architecture_mvvm.presentation.base.ViewState
 
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,15 +72,18 @@ class ContentListFragment : BaseFragment(){
         
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collect{
-                    if (it.isLoading!=null){
-                        System.out.println("jerry::isLoading:" + it.isLoading)
-                        showLoadingIndicator(it.isLoading as Boolean)
-                    }
-                    else if (it.data!=null ) {
-                        contentAdapter?.setContentList(it.data!!.items)
-                    }
-                    else if (it.t!=null){
+                viewModel.state.collect{ viewState->
+
+                    when (viewState) {
+                        is ViewState.Loading -> showLoadingIndicator(true)
+                        is ViewState.Success -> {
+                            contentAdapter?.setContentList(viewState.data!!.items)
+                            showLoadingIndicator(false)
+                        }
+                        is ViewState.Failure -> {
+                            showLoadingIndicator(false)
+                           //TODO
+                        }
 
                     }
                 }
@@ -88,6 +92,11 @@ class ContentListFragment : BaseFragment(){
 
 
         return fragmentContentListBinding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.getContent()
     }
 
     fun showLoadingIndicator(isShowLoading: Boolean) {
