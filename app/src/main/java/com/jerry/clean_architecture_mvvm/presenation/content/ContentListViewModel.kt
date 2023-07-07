@@ -2,14 +2,15 @@ package com.jerry.clean_architecture_mvvm.presentation.content
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 
-import com.jerry.clean_architecture_mvvm.others.MyResult
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jerry.clean_architecture_mvvm.domain.entities.ContentListResponse
 
 import com.jerry.clean_architecture_mvvm.domain.usecase.GetContentUseCase
 import com.jerry.clean_architecture_mvvm.presentation.base.ViewState
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
+
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContentListViewModel  @Inject constructor(
-    private val getContentUseCase: GetContentUseCase
+    private val getContentUseCase: GetContentUseCase,
+    private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ViewState<ContentListResponse>>(ViewState.Initial)
@@ -28,7 +30,7 @@ class ContentListViewModel  @Inject constructor(
 
 
     fun getContent() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _state.value = ViewState.Loading
             try {
                 _state.value = ViewState.Success(getContentUseCase())

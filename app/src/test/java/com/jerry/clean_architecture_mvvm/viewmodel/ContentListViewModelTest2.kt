@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
@@ -44,7 +45,7 @@ class ContentListViewModelTest2 {
         launch {
             whenever(mockGetContentUseCaseImpl()).thenReturn(getContentListResponse())
 
-            val mockViewModel = ContentListViewModel(mockGetContentUseCaseImpl)
+            val mockViewModel = ContentListViewModel(mockGetContentUseCaseImpl, TestCoroutineDispatcher())
 
             mockViewModel.state.collectIndexed { index, value ->
                 print(value)

@@ -11,6 +11,7 @@ import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -52,7 +53,7 @@ class ContentListViewModelTest3 {
     fun `Given the sut is initialized, then it waits for event`() {
 
         // 3.
-        val viewModel: ContentListViewModel = ContentListViewModel(mockGetContentUseCaseImpl)
+        val viewModel: ContentListViewModel = ContentListViewModel(mockGetContentUseCaseImpl, TestCoroutineDispatcher())
 
         // 4.
         assertEquals(ViewState.Initial, viewModel.state.value)
@@ -64,7 +65,7 @@ class ContentListViewModelTest3 {
             var viewModel: ContentListViewModel? = null
             given(mockGetContentUseCaseImpl()).willReturn(getContentListResponse())
 
-            viewModel =  ContentListViewModel(mockGetContentUseCaseImpl)
+            viewModel =  ContentListViewModel(mockGetContentUseCaseImpl, TestCoroutineDispatcher())
 
             viewModel.state.test {  }
 

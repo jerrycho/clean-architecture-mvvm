@@ -12,9 +12,10 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
+
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -62,15 +63,13 @@ class ContentListViewModelTest {
         // Initialize Hilt
         hiltRule.inject()
         Dispatchers.setMain(dispatcher)
-        viewModel = ContentListViewModel(getContentUseCaseImpl)
+        viewModel = ContentListViewModel(getContentUseCaseImpl, TestCoroutineDispatcher())
     }
 
     @After
     fun tearDown() {
         Dispatchers.resetMain()
     }
-
-
 
     private val testScope = TestCoroutineScope(dispatcher)
 
