@@ -6,17 +6,17 @@ buildscript {
         retrofit_adapter_rxjava = "2.9.0"
         retrofit_logging_interceptor = "4.9.1"
 
-        nav_version = '2.4.0'
-        hilt_version = '2.40'
-
-        nav_version = "2.3.1"
+        nav_version = '2.5.3'
+        hilt_version = '2.46.1'
 
         lifecycle_ktx_version ='2.4.0'
 
         coroutines_version = '1.6.0'
         mockito_version_kotlin = '4.0.0'
 
-        kotlin_version = '1.6.10'
+        //https://developer.android.com/jetpack/androidx/releases/compose-kotlin#kts
+        kotlin_version = '1.8.22' //Compatible Kotlin Version
+        compose_version = '1.4.8' //Compose Compiler Version
 
         turbine_version = '0.7.0'
     }
@@ -25,8 +25,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20"
+        classpath "com.android.tools.build:gradle:7.4.1"
+
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

@@ -84,7 +84,9 @@ class ContentListFragment : BaseFragment(){
                             showLoadingIndicator(false)
                            //TODO
                         }
+                        else ->{
 
+                        }
                     }
                 }
             }
