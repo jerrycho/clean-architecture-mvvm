@@ -16,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.jerry.clean_architecture_mvvm.app.MyAppInstrumentationRunner"
 
         buildConfigField "String", "BASE_URL", "\"https://raw.githubusercontent.com\""
 
@@ -95,6 +95,7 @@ dependencies {
 
     //hilt test
     testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
 
@@ -106,6 +107,19 @@ dependencies {
 
     //test flow
     testImplementation "app.cash.turbine:turbine:$turbine_version"
+
+
+    //UI testing
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_core_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidx_core_test"
+    androidTestImplementation "androidx.test.ext:junit:$junit_x_ext"
+    androidTestImplementation "androidx.test:rules:$testx_rules"
+
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //mock server
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
 
     //compose
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
